@@ -14,7 +14,7 @@ parse_comma <- function(col) {
 to_numeric <- function(col) {
   if (is.factor(col))
     col <- as.character(col)
-  
+
   parse_comma(col)
 }
 
@@ -27,10 +27,10 @@ names(rendimiento)[4] <- "Rendimiento"
 names(rendimiento)[5] <- "Exito"
 names(rendimiento)[6] <- "Evaluación"
 
-rendimiento$Rendimiento <- as.numeric(rendimiento$Rendimiento)
-rendimiento$Exito       <- as.numeric(rendimiento$Exito)
-rendimiento$Evaluación  <- as.numeric(rendimiento$Evaluación)
-  
+rendimiento$Rendimiento <- to_numeric(rendimiento$Rendimiento)
+rendimiento$Exito       <- to_numeric(rendimiento$Exito)
+rendimiento$Evaluación  <- to_numeric(rendimiento$Evaluación)
+
 summary(rendimiento)
 
 plot(rendimiento$Rendimiento)
