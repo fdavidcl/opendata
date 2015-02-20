@@ -36,7 +36,6 @@ plot(rendimiento$Exito ~ rendimiento$Rama)
 # Duración estudios UGR
 duracion <- get_data("http://opendata.ugr.es/dataset/5334df3b-4a3d-4f80-b09f-7801f673057b/resource/b8a65ae8-4aa9-4910-8949-505ec649a48e/download/duracionmediadelosestudiostotaltitulacionesiso.csv")
 summary(duracion)
-View(duracion)
 
 names(duracion)[3:12] <- c(
   "Titulacion","NumCursos",
@@ -44,8 +43,28 @@ names(duracion)[3:12] <- c(
   "NumEstudiantes0809","Media0809",
   "NumEstudiantes0910","Media0910",
   "NumEstudiantes1011","Media1011")
-n
 
+duracion$NumCursos <- to_numeric(duracion$NumCursos)
+duracion$NumEstudiantes1011 <- to_numeric(duracion$NumEstudiantes1011)
+duracion$Media1011 <- to_numeric(duracion$Media1011)
+duracion$Media0910 <- to_numeric(duracion$Media0910)
+duracion$Media0809 <- to_numeric(duracion$Media0809)
+
+
+
+ramas <- unique(duracion$Rama)
+barplot(legend.text = ramas,
+        height = sapply(ramas, function(r) mean(duracion[duracion$Rama == r, ]$NumCursos)),
+        col = heat.colors(length(ramas)),
+        main = "Duración media de titulaciones por rama")
+
+levels(duracion$NumEstudiantes1011)
+barplot(legend.text = ramas,
+        height = sapply(ramas, function(r) sum(duracion[duracion$Rama == r, ]$NumEstudiantes1011)),
+        col = heat.colors(length(ramas)),
+        main = "Número de estudiantes 2010-2011 por rama")
+
+View(duracion)
 
 # Citación de investigadores
 citas <- get_data("http://opendata.ugr.es/dataset/62be6e13-0fd9-457c-a599-738a08be937b/resource/c985229e-f0a4-44b7-94d8-7744406397fd/download/investigadoresugrperfilgoogle.csv")
