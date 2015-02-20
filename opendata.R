@@ -28,8 +28,20 @@ rendimiento$Exito       <- to_numeric(rendimiento$Exito)
 rendimiento$Evaluacion  <- to_numeric(rendimiento$Evaluacion)
 
 summary(rendimiento)
-
+View(rendimiento)
 plot(rendimiento$Rendimiento)
 
 
+# Duración estudios UGR
+duracion <- get_data("http://opendata.ugr.es/dataset/5334df3b-4a3d-4f80-b09f-7801f673057b/resource/b8a65ae8-4aa9-4910-8949-505ec649a48e/download/duracionmediadelosestudiostotaltitulacionesiso.csv")
+names(duracion)
+summary(duracion)
+View(duracion)
 
+names(duracion)[3:12] <- c(
+  "Titulacion","NumCursos",
+  "NumEstudiantes0708","Media0708",
+  "NumEstudiantes0809","Media0809",
+  "NumEstudiantes0910","Media0910",
+  "NumEstudiantes1011","Media1011")
+n
