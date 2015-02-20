@@ -57,4 +57,8 @@ barplot(legend.text = ramas,
         col = heat.colors(length(ramas)),
         main = "Citas por rama de conocimiento")
 
+barplot(legend.text = ramas,
+        height = sapply(ramas, function(r) mean(citas[citas$Rama.de.conocimiento == r, ]$Citas)),
+        col = heat.colors(length(ramas)),
+        main = "Media de citas por persona por rama de conocimiento")
 
