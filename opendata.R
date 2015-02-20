@@ -21,15 +21,11 @@ to_numeric <- function(col) {
 # Rendimiento UGR
 rendimiento <- get_data("http://opendata.ugr.es/dataset/5334df3b-4a3d-4f80-b09f-7801f673057b/resource/403534ce-9135-4d60-9f8a-0ad035aceaf1/download/tasaderendimientoexitoyevaluacion.csv")
 
-names(rendimiento)[2] <- "Tipo"
-names(rendimiento)[3] <- "Rama"
-names(rendimiento)[4] <- "Rendimiento"
-names(rendimiento)[5] <- "Exito"
-names(rendimiento)[6] <- "Evaluación"
+names(rendimiento)[2:6] <- c("Tipo", "Rama", "Rendimiento", "Exito", "Evaluacion")
 
 rendimiento$Rendimiento <- to_numeric(rendimiento$Rendimiento)
 rendimiento$Exito       <- to_numeric(rendimiento$Exito)
-rendimiento$Evaluación  <- to_numeric(rendimiento$Evaluación)
+rendimiento$Evaluacion  <- to_numeric(rendimiento$Evaluacion)
 
 summary(rendimiento)
 
