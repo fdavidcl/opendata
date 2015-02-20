@@ -32,4 +32,15 @@ summary(rendimiento)
 plot(rendimiento$Rendimiento)
 
 
+# Citación de investigadores
+citas <- get_data("http://opendata.ugr.es/dataset/62be6e13-0fd9-457c-a599-738a08be937b/resource/c985229e-f0a4-44b7-94d8-7744406397fd/download/investigadoresugrperfilgoogle.csv")
+
+levels(citas$Rama.de.conocimiento) <- c("Biológicas", "Salud", "Exactas/Naturales", "Humanas/Artes", "Sociales/Jurídicas", "Ingeniería/Tecnología")
+ramas <- unique(citas$Rama.de.conocimiento)
+barplot(legend.text = ramas,
+        height = sapply(ramas, function(r) sum(citas[citas$Rama.de.conocimiento == r, ]$Citas)),
+        col = heat.colors(length(ramas)),
+        main = "Citas por rama de conocimiento")
+
+
 
