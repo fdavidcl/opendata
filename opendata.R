@@ -1,10 +1,37 @@
 # install.packages('httr')
 library(httr)
 
+read_csv <- function(file_con) {
+  file_data <- strsplit(readChar(file_con, nchars = file.info(file_con)$size, useBytes = TRUE),
+                        "\\\r\n|\\\r|\\\n", fixed = FALSE, useBytes = TRUE)[[1]]
+
+  # Remove leading and trailing "
+  file_data <- sub("^\"", "", file_data)
+  file_data <- sub("\"$", "", file_data)
+
+  # Split into list of rows
+  file_data <- strsplit(file_data, "\",\"|(?<=([[:alpha:]]|\\s)),(?=([[:alpha:]]|\\s))", fixed = F, perl = T)
+  num_cols <- length(file_data[[1]])
+
+  file_data <- unlist(file_data)
+  first_row <- file_data[1:num_cols]
+  file_data <- file_data[num_cols + 1:length(file_data)]
+
+  dataset <- data.frame(matrix(
+    file_data,
+    ncol = num_cols,
+    byrow = T
+  ), stringsAsFactors = F)
+
+  names(dataset) <- first_row
+
+  dataset
+}
+
 get_data <- function(url) {
   filename <- tempfile()
-  write.csv(content(GET(url)), filename)
-  read.csv(filename)
+  writeLines(content(GET(url)), filename)
+  read_csv(filename)
 }
 
 parse_comma <- function(col) {
@@ -44,7 +71,6 @@ names(duracion)[3:12] <- c(
   "NumEstudiantes0809","Media0809",
   "NumEstudiantes0910","Media0910",
   "NumEstudiantes1011","Media1011")
-n
 
 
 # Citación de investigadores
@@ -62,3 +88,7 @@ barplot(legend.text = ramas,
         col = heat.colors(length(ramas)),
         main = "Media de citas por persona por rama de conocimiento")
 
+
+
+# Proyecto PETRA: Datos de una semana
+petra <- get_data("https://raw.githubusercontent.com/proyectopetra/OpenDataHackathon/master/Datasets/raws/week.csv")
